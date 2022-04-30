@@ -495,13 +495,15 @@ int main(int argc, char** argv) {
   }
 
   if (get_build_type() == "user") {
-    device->RemoveMenuItemForAction(Device::WIPE_SYSTEM);
-    device->RemoveMenuItemForAction(Device::MOUNT_SYSTEM);
     device->RemoveMenuItemForAction(Device::ENABLE_ADB);
   }
 
   if (!android::base::GetBoolProperty("ro.build.ab_update", false)) {
     device->RemoveMenuItemForAction(Device::SWAP_SLOT);
+  }
+
+  if (get_build_type() != "userdebug") {
+    device->RemoveMenuItemForAction(Device::ENABLE_ADB);
   }
 
   ui->SetBackground(RecoveryUI::NONE);
