@@ -292,7 +292,7 @@ error:
   return -1;
 }
 
-InstallResult ApplyFromSdcard(Device* device) {
+InstallResult ApplyFromStorage(Device* device, VolumeInfo& vi) {
   auto ui = device->GetUI();
   ui->Print("Update via sdcard. Mounting sdcard\n");
 
