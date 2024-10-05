@@ -211,12 +211,6 @@ InstallResult InstallWithFuseFromPath(std::string_view path, Device* device) {
   return result;
 }
 
-InstallResult ApplyFromStorage(Device* device, VolumeInfo& vi) {
-  auto ui = device->GetUI();
-  if (!VolumeManager::Instance()->volumeMount(vi.mId)) {
-    return INSTALL_NONE;
-}
-
 // Check whether the mmc type of provided path (/sys/block/mmcblk*/device/type)
 // is SD (sdcard) or not.
 static int check_mmc_is_sdcard (const char* mmc_type_path)
@@ -295,6 +289,10 @@ error:
 InstallResult ApplyFromStorage(Device* device, VolumeInfo& vi) {
   auto ui = device->GetUI();
   ui->Print("Update via sdcard. Mounting sdcard\n");
+
+  if (!VolumeManager::Instance()->volumeMount(vi.mId)) {
+    return INSTALL_NONE;
+  }
 
   if (do_sdcard_mount() != 0) {
     LOG(ERROR) << "\nFailed to mount sdcard\n";
